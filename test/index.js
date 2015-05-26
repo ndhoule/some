@@ -9,6 +9,12 @@ var some = require('../');
 var sinon = require('sinon');
 
 /**
+ * Disables some tests in pre-ES5 environments.
+ */
+
+var es5It = Object.create ? it : xit;
+
+/**
  * Tests.
  */
 
@@ -70,6 +76,26 @@ describe('some', function() {
     assert(spy.calledWithExactly(2, 'a', collection));
     assert(spy.calledWithExactly(3, 'b', collection));
     assert(spy.calledWithExactly(5, 'c', collection));
+  });
+
+  es5It('should ignore inherited properties', function() {
+    var parent = { a: 'a' };
+    var child = Object.create(parent, {
+      b: { value: 'b', enumerable: true }
+    });
+
+    assert(some(equal('a'), parent) === true);
+    assert(some(equal('a'), child) === false);
+  });
+
+  es5It('should ignore non-enumerable properties', function() {
+    var obj = Object.create({}, {
+      a: { value: 'a', enumerable: true },
+      b: { value: 'b', enumerable: false }
+    });
+
+    assert(some(equal('a'), obj) === true);
+    assert(some(equal('b'), obj) === false);
   });
 
   it('should throw an error when passed a non-function `predicate`', function() {
