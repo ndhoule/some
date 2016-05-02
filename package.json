@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/ndhoule/some",
   "dependencies": {
-    "@ndhoule/each": "^1.0.3"
+    "@ndhoule/each": "^2.0.1"
   },
   "devDependencies": {
     "esformatter-braces": "^0.1.7",
